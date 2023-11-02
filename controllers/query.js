@@ -35,7 +35,7 @@ const postQuery = async (req, res) => {
       const decodedToken = jwt.verify(token, process.env.SECRET);
   
       //if token is not valid, return error
-      if (!decodedToken.id) {
+      if (!decodedToken.id) { 
         return res
           .status(401)
           .json({ message: "session timeout please login again" });

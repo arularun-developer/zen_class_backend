@@ -73,6 +73,42 @@ const getTokenFrom = (req) => {
     }
   };
   
+
+  // fetching all portfolio
+
+const fetchPortfolio = async (req, res) => {
+  try {
+    //getting token of authorised student
+
+    const token = getTokenFrom(req);
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "session timeout please login again" });
+    }
+    // verifying the token
+    const decodedToken = jwt.verify(token, SECRET);
+
+    if (!decodedToken.id) {
+      return res.status(401).json({ message: "token invalid" });
+    }
+
+    //sending response data
+
+    const portfolios = await Student.findById(decodedToken.id).populate(
+      "portfolio"
+    );
+
+    res.status(200).json(portfolios.portfolio);
+    //
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "Error on fetching data please login & try again" });
+  }
+};
+
   module.exports = {
     postPortfolio,
+    fetchPortfolio
   };
