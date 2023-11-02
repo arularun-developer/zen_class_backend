@@ -87,7 +87,7 @@ const fetchPortfolio = async (req, res) => {
         .json({ message: "session timeout please login again" });
     }
     // verifying the token
-    const decodedToken = jwt.verify(token, SECRET);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
 
     if (!decodedToken.id) {
       return res.status(401).json({ message: "token invalid" });
